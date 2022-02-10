@@ -1,0 +1,9 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="AndroidADBAppManager.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="ADBPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">c:\adb\adb.exe</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
