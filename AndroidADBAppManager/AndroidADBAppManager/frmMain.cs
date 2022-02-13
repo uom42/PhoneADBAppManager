@@ -1,53 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿
+using AndroidADBAppManager.ADB;
 
-using AndroidADBAppManager.ADBCore;
+using common;
 
 namespace AndroidADBAppManager
 {
-    internal partial class frmMain : Form
-    {
-        private ADBServer srv;
+	internal partial class frmMain : Form
+	{
+		private readonly ADBServer ADB;
 
-        protected frmMain()
-        {
-            InitializeComponent();
-        }
+		protected frmMain()
+		{
+			InitializeComponent();
+		}
 
-        public frmMain(ADBServer s) : this()
-        {
-            srv = s;
+		public frmMain(ADBServer s) : this()
+		{
+			ADB = s;
+			Text = ADB.CurrentDevice.ToString();
 
-            Text = srv.CurrentDevice.ToString();
 
-            //this.Shown += new EventHandler(OnShown);
+			Package_Init();
+			Props_Init();
 
-        }
+			this.ExecDelay(ReloadAll());
+		}
 
-        private void frmMain_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void OnShown(object sender, EventArgs e)
-        {
-            try
-            {
-                //srv = frmADBConnect.Connect();
-                //if (srv == null) throw new Exception("Failed to Connect to ADB!");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Close();
-            }
-        }
-    }
+		private async Task ReloadAll()
+		{
+			await Props_Reload();
+			await Package_Reload();
+		}
+	}
 }

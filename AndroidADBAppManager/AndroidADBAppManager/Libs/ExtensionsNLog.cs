@@ -5,27 +5,24 @@ using NLog;
 
 #nullable enable
 
-namespace AndroidADBAppManager.Libs
+namespace common
 {
 	internal static class ExtensionsNLog
 	{
 
 		[DebuggerNonUserCode, DebuggerStepThrough, MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static void Display(
+		public static void Handle(
 			this Exception ex,
-			MessageBoxIcon icon = MessageBoxIcon.Error,
-			ILogger? logger = null)
+			bool showError = true,
+			ILogger? logger = null,
+			MessageBoxIcon icon = MessageBoxIcon.Error)
 		{
 			logger ??= LogManager.GetCurrentClassLogger();
 			logger.Error(ex);
-			MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, icon);
+
+			if (showError)
+				MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, icon);
 		}
-
-		[DebuggerNonUserCode, DebuggerStepThrough, MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static void Display(
-			this Exception ex,
-			ILogger? logger = null)
-			=> ex.Display(MessageBoxIcon.Error, logger);
-
 	}
+
 }

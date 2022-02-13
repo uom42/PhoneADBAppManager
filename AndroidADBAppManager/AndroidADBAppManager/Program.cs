@@ -1,17 +1,17 @@
-﻿using AndroidADBAppManager.ADBCore;
+﻿using AndroidADBAppManager.ADB;
 
 namespace AndroidADBAppManager
 {
-    internal static class Program
-    {
-        [STAThread]
-        static void Main()
-        {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
+	internal static class Program
+	{
+		[STAThread]
+		static void Main()
+		{
+			Application.EnableVisualStyles();
+			Application.SetCompatibleTextRenderingDefault(false);
+			Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
 
-            /*
+			/*
 			Application.ThreadException += (s, e) =>
 			{
 				MessageBox.Show(e.Exception.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -19,19 +19,19 @@ namespace AndroidADBAppManager
 			};
 			 */
 
-            try
-            {
-                var srv = frmADBConnect.Connect();
-                if (srv == null) return;
+			try
+			{
+				var srv = frmADBConnect.Connect();
+				if (srv == null) return;
 
-                Application.Run(new frmMain(srv!));
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+				Application.Run(new frmMain(srv!));
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
 
-            /*		 
+			/*		 
 			//if (!System.Diagnostics.Debugger.IsAttached)
 			{
 				
@@ -66,6 +66,6 @@ namespace AndroidADBAppManager
 				MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 				*/
-        }
-    }
+		}
+	}
 }
