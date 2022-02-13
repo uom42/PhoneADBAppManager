@@ -3,16 +3,58 @@
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
-namespace AndroidADBAppManager.Libs
+namespace common
 {
-    internal static class AsyncHelpers
+
+    [DebuggerStepThrough]
+    internal static class ExtensionsAsync
     {
+        public const int DEFAULT_FORM_SHOWN_DELAY = 500;
+
+        [DebuggerNonUserCode, DebuggerStepThrough, MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void ExecDelay(
+            this Form f,
+            Task[] tasks,
+            int delay = DEFAULT_FORM_SHOWN_DELAY,
+            bool showError = true,
+            bool CloseFormOnError = true,
+            bool useWaitCursor = true)
+        {
+            f.Shown += async (s, e) =>
+            {
+                await Task.Delay(delay);
+
+                if (useWaitCursor) f.UseWaitCursor = true;
+                try
+                {
+                    try { await Task.WhenAll(tasks); }
+                    finally { if (useWaitCursor) f.UseWaitCursor = false; }
+                }
+                catch (Exception ex)
+                {
+                    ex.Handle(showError);
+                    if (CloseFormOnError) f.Close();
+                }
+            };
+        }
+
+        [DebuggerNonUserCode, DebuggerStepThrough, MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void ExecDelay(
+            this Form f,
+            Task task,
+            int delay = DEFAULT_FORM_SHOWN_DELAY,
+            bool showError = true,
+            bool CloseFormOnError = true,
+            bool useWaitCursor = true)
+                => ExecDelay(f, task.ToArrayOf(), delay, showError, CloseFormOnError, useWaitCursor);
+
+
         /// <summary>
         /// Execute's an async Task<T> method which has a void return value synchronously
         /// </summary>
         /// <param name="task">Task<T> method to execute</param>
         [DebuggerNonUserCode, DebuggerStepThrough, MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void RunSync(this Func<Task> task)
+        public static void ExecSync(this Func<Task> task)
         {
             var oldContext = SynchronizationContext.Current;
             ExclusiveSynchronizationContext synch = new();
@@ -45,7 +87,7 @@ namespace AndroidADBAppManager.Libs
         /// <param name="task">Task<T> method to execute</param>
         /// <returns></returns>
         [DebuggerNonUserCode, DebuggerStepThrough, MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T? RunSync<T>(this Func<Task<T?>> task)
+        public static T? ExecSync<T>(this Func<Task<T?>> task)
         {
             var oldContext = SynchronizationContext.Current;
             var synch = new ExclusiveSynchronizationContext();
@@ -79,9 +121,9 @@ namespace AndroidADBAppManager.Libs
         /// <param name="task">Task<T> method to execute</param>
         /// <returns></returns>
         [DebuggerNonUserCode, DebuggerStepThrough, MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T? RunSync<T>(this Task<T> task)
+        public static T? ExecSync<T>(this Task<T> task)
         {
-            var ret = RunSync(() => task!);
+            var ret = ExecSync(() => task!);
             return ret;
         }
 
@@ -143,4 +185,5 @@ namespace AndroidADBAppManager.Libs
             }
         }
     }
+
 }
