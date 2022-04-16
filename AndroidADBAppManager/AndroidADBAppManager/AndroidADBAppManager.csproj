@@ -16,7 +16,7 @@
   <ItemGroup>
     <Compile Include="..\..\..\..\..\_LIB\CS_UOM\uom.Multiplatform.Core.cs" Link="Libs\uom.Multiplatform.Core.cs" />
     <Compile Include="..\..\..\..\..\_LIB\CS_UOM\uom.Win.Core.cs" Link="Libs\uom.Win.Core.cs" />
-    <Compile Include="..\..\..\..\..\_LIB\CS_UOM\_Controls\common.Controls.ListViewEx.cs" Link="Libs\common.Controls.ListViewEx.cs" />
+    <Compile Include="..\..\..\..\..\_LIB\CS_UOM\_Controls\common.Controls.ListViewEx.cs" Link="Libs\Controls\common.Controls.ListViewEx.cs" />
   </ItemGroup>
 
   <ItemGroup>
